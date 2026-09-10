@@ -1,0 +1,31 @@
+<div class="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#f3efe9] via-stone-50 to-[#dfeae6] p-6">
+  <div class="w-full max-w-md rounded-3xl border border-stone-200 bg-white p-8 shadow-[0_18px_50px_rgba(17,24,39,0.08)]">
+    <div class="mb-8 text-center">
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#5c7f74] text-xl font-semibold text-white shadow-sm">S</div>
+      <h1 class="mt-5 text-3xl font-semibold tracking-[0.16em] text-slate-800">SAEROM</h1>
+      <p class="mt-2 text-sm text-slate-500">Clinic management system</p>
+    </div>
+
+    <% if alert %>
+      <div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"><%= alert %></div>
+    <% end %>
+
+    <%= form_with url: login_path, method: :post, class: "space-y-5" do |form| %>
+      <div>
+        <%= form.label :email, "Email address", class: "mb-1 block text-sm font-medium text-slate-700" %>
+        <%= form.email_field :email, class: "w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-slate-800 focus:border-[#5c7f74] focus:outline-none focus:ring-2 focus:ring-[#dfeae6]" %>
+      </div>
+
+      <div>
+        <%= form.label :password, "Password", class: "mb-1 block text-sm font-medium text-slate-700" %>
+        <%= form.password_field :password, class: "w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-slate-800 focus:border-[#5c7f74] focus:outline-none focus:ring-2 focus:ring-[#dfeae6]" %>
+      </div>
+
+      <button type="submit" class="w-full rounded-xl bg-[#5c7f74] px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-[#4d6d67]">Sign in</button>
+    <% end %>
+
+    <div class="mt-5 border-t border-stone-200 pt-4 text-center text-xs text-slate-500">
+      Demo access: admin@saerom.local / password123
+    </div>
+  </div>
+</div>

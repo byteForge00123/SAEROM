@@ -1,0 +1,27 @@
+<div class="space-y-6">
+  <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+    <h1 class="text-2xl font-semibold text-slate-900">Search</h1>
+    <%= form_with url: search_path, method: :get, class: "mt-4 flex gap-3" do %>
+      <%= text_field_tag :q, params[:q], class: "w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-slate-800", placeholder: "Search patients, doctors, records..." %>
+      <button type="submit" class="rounded-xl bg-[#5c7f74] px-4 py-2.5 text-sm font-medium text-white">Search</button>
+    <% end %>
+  </div>
+
+  <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+    <% if @results.any? %>
+      <div class="space-y-3">
+        <% @results.each do |result| %>
+          <div class="flex items-center justify-between rounded-xl border border-stone-200 bg-stone-50 p-3">
+            <div>
+              <div class="font-medium text-slate-800"><%= result.respond_to?(:full_name) ? result.full_name : result.name %></div>
+              <div class="text-sm text-slate-500"><%= result.respond_to?(:specialty) ? result.specialty : result.phone %></div>
+            </div>
+            <%= link_to "Open", result.is_a?(Patient) ? patient_path(result) : (result.is_a?(Doctor) ? doctor_path(result) : '#'), class: "text-sm font-medium text-[#5c7f74]" %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-sm text-slate-500">No matching results found.</p>
+    <% end %>
+  </div>
+</div>

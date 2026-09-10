@@ -1,0 +1,102 @@
+<div class="space-y-6">
+  <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <div>
+      <p class="text-sm font-medium uppercase tracking-[0.18em] text-[#5c7f74]">Clinic overview</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Welcome back, <%= current_user.name %></h1>
+    </div>
+    <div class="flex items-center gap-3">
+      <%= link_to "New patient", new_patient_path, class: "rounded-xl bg-[#5c7f74] px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[#4d6d67]" %>
+      <%= link_to "Schedule visit", new_appointment_path, class: "rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-stone-100" %>
+    </div>
+  </div>
+
+  <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <% stats = [{label: 'Patients', value: @patients.count, meta: '+12% vs last month', tone: 'emerald'}, {label: 'Appointments', value: @today_appointments, meta: 'Today', tone: 'sky'}, {label: 'Revenue', value: number_to_currency(@revenue || 0), meta: 'This month', tone: 'amber'}, {label: 'Pending', value: @pending_payments, meta: 'Awaiting payment', tone: 'rose'}] %>
+    <% stats.each do |stat| %>
+      <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-slate-500"><%= stat[:label] %></p>
+          <span class="rounded-full bg-<%= stat[:tone] %>-100 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-<%= stat[:tone] %>-700"><%= stat[:meta].split.first %></span>
+        </div>
+        <div class="mt-4 text-3xl font-semibold text-slate-900"><%= stat[:value] %></div>
+        <p class="mt-2 text-xs text-slate-500"><%= stat[:meta] %></p>
+      </div>
+    <% end %>
+  </section>
+
+  <section class="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+    <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+      <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-slate-800">Today's appointments</h2>
+        <%= link_to "View all", appointments_path, class: "text-sm font-medium text-[#5c7f74]" %>
+      </div>
+
+      <div class="space-y-3">
+        <% if @appointments.any? %>
+          <% @appointments.each do |appointment| %>
+            <div class="flex items-center justify-between rounded-xl border border-stone-200 bg-stone-50 p-3">
+              <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#dfeae6] text-sm font-semibold text-[#194c47]"><%= appointment.patient.first_name.first %><%= appointment.patient.last_name.first %></div>
+                <div>
+                  <div class="font-medium text-slate-800"><%= appointment.patient.full_name %></div>
+                  <div class="text-sm text-slate-500"><%= appointment.doctor.name %> • <%= appointment.appointment_type %></div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm font-medium text-slate-800"><%= appointment.appointment_date.strftime("%b %d") %></div>
+                <div class="text-xs text-slate-500"><%= appointment.start_time.strftime("%I:%M %p") %></div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-sm text-slate-500">No appointments scheduled yet.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+      <h2 class="text-lg font-semibold text-slate-800">Care team</h2>
+      <div class="mt-4 space-y-3">
+        <% @doctors.each do |doctor| %>
+          <div class="flex items-center justify-between rounded-xl border border-stone-200 bg-stone-50 p-3">
+            <div>
+              <div class="font-medium text-slate-800"><%= doctor.name %></div>
+              <div class="text-sm text-slate-500"><%= doctor.specialty %></div>
+            </div>
+            <span class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-emerald-700"><%= doctor.status %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+    <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+      <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-slate-800">Recent patients</h2>
+        <%= link_to "Patients", patients_path, class: "text-sm font-medium text-[#5c7f74]" %>
+      </div>
+      <div class="space-y-3">
+        <% @patients.each do |patient| %>
+          <div class="flex items-center justify-between rounded-xl border border-stone-200 bg-stone-50 p-3">
+            <div>
+              <div class="font-medium text-slate-800"><%= patient.full_name %></div>
+              <div class="text-sm text-slate-500"><%= patient.patient_id %> • <%= patient.phone %></div>
+            </div>
+            <span class="rounded-full bg-sky-100 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-sky-700"><%= patient.status %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+      <h2 class="text-lg font-semibold text-slate-800">Quick actions</h2>
+      <div class="mt-4 grid gap-3">
+        <%= link_to "Register new patient", new_patient_path, class: "rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-stone-100" %>
+        <%= link_to "Create appointment", new_appointment_path, class: "rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-stone-100" %>
+        <%= link_to "Add prescription", new_prescription_path, class: "rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-stone-100" %>
+        <%= link_to "Open billing", invoices_path, class: "rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-stone-100" %>
+      </div>
+    </div>
+  </section>
+</div>
