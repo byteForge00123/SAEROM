@@ -164,6 +164,4 @@ Contributions are welcome. Please open an issue or submit a pull request with a 
 
 This project is licensed under the MIT License.
 
-## Repository
 
-- GitHub: https://github.com/byteForge00123/SAEROM
