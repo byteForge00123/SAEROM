@@ -118,7 +118,7 @@ This usually happens when one of the following is not ready:
 Use the Ruby 3.2 environment and clear stale server state:
 
 ```powershell
-cd "C:\Users\venus\OneDrive\Desktop\saerom"
+cd "C:\Users\Desktop\saerom"
 $env:Path += ';C:\Ruby32-x64\bin;C:\Ruby32-x64\msys64\usr\bin'
 Get-Process ruby,puma -ErrorAction SilentlyContinue | Stop-Process -Force
 Remove-Item .\tmp\pids\server.pid -ErrorAction SilentlyContinue
